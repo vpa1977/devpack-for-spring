@@ -1,0 +1,6 @@
+*.snap
+.vscode
+.idea
+target
+dependency-reduced-pom.xml
+content-snaps

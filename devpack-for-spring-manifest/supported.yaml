@@ -1,24 +1,8 @@
 version: 1
 content-snaps:
-  content-for-spring-cli:
-    upstream: https://github.com/spring-projects/spring-cli
-    version: 0.9.0
-    channel: latest/edge
-    mount: /spring-cli
-    oss-eol: n/a
-    name: content-for-spring-cli
-    build-jdk: openjdk-17-jdk-headless
-    summary: Rebuild of Spring® CLI sources
-    description: |
-      Rebuild of Spring® CLI sources.
-      Spring is a trademark of Broadcom Inc. and/or its subsidiaries.
-    license: Apache-2.0
-    lts: false
-    tool: true
-
   content-for-spring-boot-34:
     upstream: https://github.com/spring-projects/spring-boot
-    version: 3.4.2
+    version: spring-boot-34
     channel: latest/edge
     mount: /maven-repo
     oss-eol: 2025-12-31
@@ -33,7 +17,7 @@ content-snaps:
 
   content-for-spring-boot-runtime-33:
     upstream: https://github.com/spring-projects/spring-boot
-    version: 3.3.8
+    version: spring-boot-33
     channel: latest/edge
     mount: /maven-repo
     oss-eol: 2025-06-30
@@ -48,7 +32,7 @@ content-snaps:
 
   content-for-spring-framework-62:
     upstream: https://github.com/spring-projects/spring-framework
-    version: 6.2.3
+    version: spring-core-62
     channel: latest/edge
     mount: /maven-repo
     oss-eol: 2026-06-30
@@ -63,7 +47,7 @@ content-snaps:
 
   content-for-spring-framework-61:
     upstream: https://github.com/spring-projects/spring-framework
-    version: 6.1.14
+    version: spring-core-61
     channel: latest/edge
     mount: /maven-repo
     oss-eol: 2026-06-30

@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.canonical.devpackspring.content;
 
 import java.io.IOException;
@@ -21,21 +22,27 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.yaml.snakeyaml.Yaml;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public final class TestApp {
 
     @Test
     public void testGenerateManifest(@TempDir Path testDir) throws IOException {
+        String versions = """
+                [libraries]
+                spring-boot-34 = { group = "org.springframework.boot", name = "spring-boot-dependencies", version = "3.4.2" }
+                spring-boot-33 = { group = "org.springframework.boot", name = "spring-boot-dependencies", version = "3.3.2" }
+                """;
         String manifest = """
                 content-snaps:
                   content-for-spring-boot-33:
                     upstream: https://github.com/spring-projects/spring-boot
-                    version: 3.3.2
+                    version: spring-boot-33
                     channel: latest/edge
                     mount: /maven-repo
                     oss-eol: 2025-12-31
@@ -48,10 +55,10 @@ public final class TestApp {
                     license: Apache-2.0
                     build-jdk: openjdk-17-jdk-headless
                     lts: false
-                  
+
                   content-for-spring-boot-34:
                     upstream: https://github.com/spring-projects/spring-boot
-                    version: 3.4.2
+                    version: spring-boot-34
                     channel: latest/edge
                     mount: /maven-repo
                     oss-eol: 2025-12-31
@@ -67,6 +74,8 @@ public final class TestApp {
                 """;
         Path testManifest = testDir.resolve("manifest.yaml");
         Files.writeString(testManifest, manifest);
+        Path testVersions = testDir.resolve("manifest.versions.toml");
+        Files.writeString(testVersions, versions);
         App.main(new String[]{"-m", testManifest.toString(), "-d", testDir.toString(), "-t", "src/test/resources/com/canonical/devpackspring/content"});
 
         Path contentSnapPath = testDir.resolve("content-for-spring-boot-34");

@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.canonical.devpackspring.content;
 
 import java.io.ByteArrayInputStream;
@@ -41,6 +42,8 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.text.StringSubstitutor;
+import org.tomlj.Toml;
+import org.tomlj.TomlTable;
 import org.yaml.snakeyaml.Yaml;
 
 
@@ -50,10 +53,12 @@ public final class App {
     private static final Log LOG = LogFactory.getLog(App.class);
 
     private App() {
-
     }
 
     private static Set<ContentSnap> loadSnaps(String path) throws IOException {
+        String tomlCatalog = path.substring(0, path.lastIndexOf(".")) + ".versions.toml";
+        var toml = Toml.parse(Path.of(tomlCatalog));
+        TomlTable libraries = toml.getTableOrEmpty("libraries");
         Yaml yaml = new Yaml();
         HashSet<ContentSnap> snapList = new HashSet<ContentSnap>();
         byte[] manifest = Files.readAllBytes(Path.of(path));
@@ -72,7 +77,8 @@ public final class App {
                     continue;
                 }
                 var snap = (Map<String, String>) snaps.get(name);
-                snapList.add(new ContentSnap(snap.get("name"), snap.get("version"), snap.get("summary"),
+                TomlTable versionEntry = libraries.getTableOrEmpty(snap.get("version"));
+                snapList.add(new ContentSnap(snap.get("name"), versionEntry.getString("version"), snap.get("summary"),
                         snap.get("description"), snap.get("upstream"), snap.get("license"),
                         snap.getOrDefault("build-jdk", "openjdk-17-jdk-headless"),
                         snap.getOrDefault("extra-command", "")));

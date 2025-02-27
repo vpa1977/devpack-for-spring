@@ -23,7 +23,7 @@ jobs:
               java-version: '21'
               cache: 'maven'
         - run: |
-            sudo apt-get update && sudo apt-get install -y make
+            sudo apt-get update && sudo apt-get install -y make maven openjdk-21-jdk-headless
             make prepare
             if [ ${{ github.event.inputs.snap }} -eq all ]; then
               snaps_json = $(yq eval -o=json devpack-for-spring-manifest/supported.yaml | jq ".\"content-snaps\" | keys")
@@ -47,7 +47,7 @@ jobs:
               java-version: '21'
               cache: 'maven'
         - run: |
-            sudo apt-get update && sudo apt-get install -y  make
+            sudo apt-get update && sudo apt-get install -y make maven openjdk-21-jdk-headless
             make prepare
         - name: Build ${{matrix.snap}}
           id: build

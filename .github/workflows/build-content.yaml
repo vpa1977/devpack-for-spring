@@ -65,3 +65,11 @@ jobs:
           with:
             name: ${{matrix.snap}}
             path: ${{ steps.build.outputs.snap }}
+        - name: publish to snap store ${{matrix.snap}}
+          if:
+          uses: snapcore/action-publish@v1
+          env:
+            SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPSTORE_LOGIN }}
+          with:
+            snap: ${{ steps.build.outputs.snap }}
+            release: edge

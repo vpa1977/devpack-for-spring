@@ -26,7 +26,7 @@ jobs:
             set -ex
             sudo apt-get update && sudo apt-get install -y make maven openjdk-21-jdk-headless
             make prepare
-            if [ ${{ github.event.inputs.snap }} -eq "all" ]; then
+            if [ "${{ github.event.inputs.snap }}" == "all" ]; then
               snaps_json = $(yq eval -o=json devpack-for-spring-manifest/supported.yaml | jq ".\"content-snaps\" | keys")
             else
               snaps_json = $( echo "[ \"${{ github.event.inputs.snap }}\"]")

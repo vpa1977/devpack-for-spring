@@ -22,6 +22,7 @@ jobs:
               distribution: 'temurin'
               java-version: '21'
         - run: |
+            sudo apt-get install -U -y  make
             make prepare
             if [ ${{ github.event.inputs.snap }} -eq all ]; then
               snaps_json = $(yq eval -o=json devpack-for-spring-manifest/supported.yaml | jq ".\"content-snaps\" | keys")
@@ -44,6 +45,7 @@ jobs:
               distribution: 'temurin'
               java-version: '21'
         - run: |
+            sudo apt-get install  -U -y  make
             make prepare
         - name: Build ${{matrix.snap}}
           id: build

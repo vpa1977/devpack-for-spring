@@ -24,7 +24,8 @@ jobs:
               cache: 'maven'
         - run: |
             set -ex
-            sudo apt-get update && sudo apt-get install -y make maven openjdk-21-jdk-headless yq jq
+            sudo apt-get update && sudo apt-get install -y make maven openjdk-21-jdk-headless jq
+            sudo snap install yq
             make prepare
             if [ "${{ github.event.inputs.snap }}" == "all" ]; then
               snaps_json=$(yq eval -o=json devpack-for-spring-manifest/supported.yaml | jq ".\"content-snaps\" | keys")

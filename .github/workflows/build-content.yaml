@@ -24,12 +24,12 @@ jobs:
               cache: 'maven'
         - run: |
             set -ex
-            sudo apt-get update && sudo apt-get install -y make maven openjdk-21-jdk-headless
+            sudo apt-get update && sudo apt-get install -y make maven openjdk-21-jdk-headless yq jq
             make prepare
             if [ "${{ github.event.inputs.snap }}" == "all" ]; then
-              snaps_json = $(yq eval -o=json devpack-for-spring-manifest/supported.yaml | jq ".\"content-snaps\" | keys")
+              snaps_json=$(yq eval -o=json devpack-for-spring-manifest/supported.yaml | jq ".\"content-snaps\" | keys")
             else
-              snaps_json = $( echo "[ \"${{ github.event.inputs.snap }}\"]")
+              snaps_json=$( echo "[ \"${{ github.event.inputs.snap }}\"]")
             fi
             echo "matrix=$(echo $snaps_json)" >> $GITHUB_OUTPUT
 

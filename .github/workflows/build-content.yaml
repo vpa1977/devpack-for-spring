@@ -46,7 +46,7 @@ jobs:
         - run: |
             make prepare
         - name: Build ${{matrix.snap}}
-          id: ${{matrix.snap}}
+          id: build
           uses: snapcore/action-build@v1
           with:
             path: target/${{matrix.snap}}
@@ -55,4 +55,4 @@ jobs:
           uses: actions/upload-artifact@v4
           with:
             name: ${{matrix.snap}}
-            path: ${{ steps.${{matrix.snap}}.outputs.snap }}
+            path: ${{ steps.build.outputs.snap }}

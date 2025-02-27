@@ -2,5 +2,21 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "branchConcurrentLimit": 0,
+  "prHourlyLimit": 0,
+  "prConcurrentLimit": 0,
+  "packageRules": [
+    {
+        "matchFileNames": ["devpack-for-spring-manifest/supported.versions.toml"],
+        "groupName": "content snap version updates",
+        "separateMinorPatch": true,
+        "separateMajorMinor": true
+    },
+    {
+        "matchFileNames": ["devpack-for-spring-manifest/supported.versions.toml"],
+        "matchUpdateTypes": ["major", "minor"],
+        "enabled": false
+    }
   ]
 }

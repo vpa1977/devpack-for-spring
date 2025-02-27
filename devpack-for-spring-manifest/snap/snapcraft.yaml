@@ -29,9 +29,12 @@ parts:
       - git
       - yamllint
       - yq
+      - python3
     override-build: |
-      craftctl default
       yamllint supported.yaml
+      ./generate-manifest.py
+      mv transformed.yaml supported.yaml
+      craftctl default
       craftctl set version="$(yq .version supported.yaml)"
     prime:
       - supported.yaml

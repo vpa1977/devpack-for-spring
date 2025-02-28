@@ -2,11 +2,12 @@
 
 import yaml
 import toml
+import sys
 
-with open("supported.yaml", "r") as yaml_file:
+with open(sys.argv[1], "r") as yaml_file:
     yaml_data = yaml.safe_load(yaml_file)
 
-with open("supported.versions.toml", "r") as toml_file:
+with open(sys.argv[2], "r") as toml_file:
     toml_data = toml.load(toml_file)
 
 def set_versions(yaml_data, toml_data):
@@ -17,5 +18,5 @@ def set_versions(yaml_data, toml_data):
 
 set_versions(yaml_data, toml_data)
 
-with open("transformed.yaml", "w") as yaml_file:
+with open(sys.argv[3], "w") as yaml_file:
     yaml.safe_dump(yaml_data, yaml_file)

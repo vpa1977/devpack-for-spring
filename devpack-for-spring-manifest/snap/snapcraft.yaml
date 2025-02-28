@@ -23,7 +23,7 @@ slots:
 
 parts:
   devpack-for-spring-manifest:
-    plugin: dump
+    plugin: nil
     source: .
     build-packages:
       - git
@@ -32,10 +32,8 @@ parts:
       - python3
     override-build: |
       yamllint supported.yaml
-      ./generate-manifest.py
-      mv transformed.yaml supported.yaml
-      craftctl default
+      ./generate-manifest.py supported.yaml supported.versions.toml \
+        ${CRAFT_PART_INSTALL}/supported.yaml
+      cp LICENSE ${CRAFT_PART_INSTALL}/
       craftctl set version="$(yq .version supported.yaml)"
-    prime:
-      - supported.yaml
-      - LICENSE
+      craftctl default

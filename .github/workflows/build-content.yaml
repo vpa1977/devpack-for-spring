@@ -1,0 +1,71 @@
+name: Release content snaps
+
+on:
+  workflow_dispatch:
+    inputs:
+      snap:
+        description: name of the snap to release
+        required: true
+        default: all
+
+jobs:
+    prepare:
+      runs-on: [self-hosted, large, jammy, X64]
+      outputs:
+        snaps: ${{ steps.gen_snaps.outputs.snaps }}
+      steps:
+        - uses: actions/checkout@v4
+        - uses: actions/setup-java@v4
+          with:
+              distribution: 'temurin'
+              java-version: '21'
+              cache: 'maven'
+        - id: gen_snaps
+          run: |
+            set -ex
+            sudo apt-get update && sudo apt-get install -y make maven openjdk-21-jdk-headless jq
+            sudo snap install yq
+            make prepare
+            if [ "${{ github.event.inputs.snap }}" == "all" ]; then
+              snaps_json=$(yq eval -o=json devpack-for-spring-manifest/supported.yaml | jq ".\"content-snaps\" | keys")
+            else
+              snaps_json=$( echo "[ \"${{ github.event.inputs.snap }}\"]")
+            fi
+            echo "snaps=$(echo $snaps_json)" >> "$GITHUB_OUTPUT"
+
+
+    build_content:
+      needs: prepare
+      runs-on: [self-hosted, large, jammy, X64]
+      strategy:
+        matrix:
+          snap: ${{fromJson(needs.prepare.outputs.snaps)}}
+      steps:
+        - uses: actions/checkout@v4
+        - uses: actions/setup-java@v4
+          with:
+              distribution: 'temurin'
+              java-version: '21'
+              cache: 'maven'
+        - run: |
+            sudo apt-get update && sudo apt-get install -y make maven openjdk-21-jdk-headless
+            make prepare
+        - name: Build ${{matrix.snap}}
+          id: build
+          uses: snapcore/action-build@v1
+          with:
+            path: target/${{matrix.snap}}
+        - name: Upload Snap to workflow artifacts
+          id: upload-artifact
+          uses: actions/upload-artifact@v4
+          with:
+            name: ${{matrix.snap}}
+            path: ${{ steps.build.outputs.snap }}
+        - name: publish to snap store ${{matrix.snap}}
+          if:
+          uses: snapcore/action-publish@v1
+          env:
+            SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPSTORE_LOGIN }}
+          with:
+            snap: ${{ steps.build.outputs.snap }}
+            release: edge

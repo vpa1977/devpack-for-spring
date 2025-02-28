@@ -14,9 +14,6 @@ slots:
   devpack-for-spring-manifest:
     interface: content
     content: devpack-for-spring-manifest
-    allow-auto-connection:
-      plug-publisher-id:
-        - $SLOT_PUBLISHER_ID
     source:
       read:
         - $SNAP

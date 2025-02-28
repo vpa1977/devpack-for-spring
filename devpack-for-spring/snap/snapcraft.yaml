@@ -17,17 +17,6 @@ description: |
 grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: classic # use 'strict' once you have the right plugs and slots
 
-plugs:
-  devpack-for-spring-content:
-    interface: content
-    content: devpack-for-spring-content
-    target: $SNAP/maven-repo
-
-  devpack-for-spring-manifest:
-    interface: content
-    content: devpack-for-spring-content
-    target: $SNAP/manifest
-
 parts:
   build-cli:
     plugin: nil

@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-set -euxo pipefail
-
-devpack-for-spring snap setup-gradle
-devpack-for-spring snap setup-maven

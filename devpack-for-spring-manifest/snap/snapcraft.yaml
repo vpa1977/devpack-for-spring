@@ -10,14 +10,6 @@ description: |
 grade: stable
 confinement: strict
 
-slots:
-  devpack-for-spring-manifest:
-    interface: content
-    content: devpack-for-spring-manifest
-    source:
-      read:
-        - $SNAP
-
 parts:
   devpack-for-spring-manifest:
     plugin: nil

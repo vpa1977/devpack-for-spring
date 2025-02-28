@@ -70,13 +70,14 @@ jobs:
         env:
           ARTIFACT_PATH: ${{ steps.download-artifact.outputs.download-path }}
         run: |
+          set -ex
           ls -la $ARTIFACT_PATH
           SNAP_FILE_NAME=$(ls ${ARTIFACT_PATH}/devpack-for-spring*.snap)
           echo "SNAP_PATH=${SNAP_FILE_NAME}" >> "$GITHUB_OUTPUT"
 
       - uses: snapcore/action-publish@v1
         env:
-          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAP_STORE_LOGIN }}
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPSTORE_LOGIN }}
         with:
-          snap: ${{ steps.gather-filename.outputs.SNAP_PATH }}
+          snap: ${{ steps.gather-filename-devpack.outputs.SNAP_PATH }}
           release: edge

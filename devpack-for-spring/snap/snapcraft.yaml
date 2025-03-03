@@ -1,7 +1,7 @@
 name: devpack-for-spring
 base: bare
 build-base: core24
-version: '0.10'
+version: '0.11'
 summary: Development tools for Spring® projects
 description: |
   Development tools for Spring® projects.
@@ -47,6 +47,11 @@ parts:
       - enable-patchelf
     stage-packages:
       - openjdk-21-jdk-headless
+      - libc6
+      - libgcc-s1
+      - libstdc++6
+      - zlib1g
+      - libnss3
     override-build: |
       craftctl default
       (cd $CRAFT_PART_INSTALL && mkdir -p usr/bin && ln -sf --relative usr/lib/jvm/java-21-openjdk-${CRAFT_ARCH_BUILD_FOR}/bin/java usr/bin/java)

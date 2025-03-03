@@ -1,0 +1,9 @@
+summary: check that devpack for spring can install content snaps
+
+execute: |
+  set -ex
+  SNAPS=`devpack-for-spring snap list | grep content | awk -F'│' '{ print $3}'`
+  for snap in $SNAPS; do
+    devpack-for-spring snap install $snap
+    devpack-for-spring snap remove $snap
+  done

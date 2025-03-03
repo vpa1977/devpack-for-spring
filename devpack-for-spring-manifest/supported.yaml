@@ -1,4 +1,4 @@
-version: 1
+version: 2
 content-snaps:
   content-for-spring-boot-35:
     upstream: https://github.com/spring-projects/spring-boot

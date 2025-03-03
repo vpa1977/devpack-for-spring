@@ -1,6 +1,6 @@
 name: devpack-for-spring-manifest
-base: core24
-version: 1.0
+build-base: core24
+base: bare
 adopt-info: devpack-for-spring-manifest
 summary: The list of all available content snaps for Spring®
 description: |

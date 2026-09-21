@@ -9,4 +9,4 @@ fi
 
 systemctl is-active --quiet squid && sudo systemctl stop squid
 rm -rf /etc/squid /var/lib/squid /var/spool/squid /var/log/squid /usr/lib/squid
-apt-get purge -y --auto-remove squid-openssl openssl iptables ca-certificates
+apt-get purge -y --auto-remove squid-openssl

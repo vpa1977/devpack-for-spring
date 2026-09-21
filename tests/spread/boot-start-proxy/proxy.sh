@@ -75,22 +75,13 @@ echo "=== 4. Setting Environment Variables & Trusting the CA ==="
 cp "$CERT_DIR/squid.crt" /usr/local/share/ca-certificates/squid-ca.crt
 update-ca-certificates -f
 
-# Set up global proxy variables
-cat << 'EOF' > /etc/environment
-PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-http_proxy="http://127.0.0.1:3128/"
-https_proxy="http://127.0.0.1:3128/"
-HTTP_PROXY="http://127.0.0.1:3128/"
-HTTPS_PROXY="http://127.0.0.1:3128/"
-no_proxy="localhost,127.0.0.1"
-NO_PROXY="localhost,127.0.0.1"
-EOF
-
 # Export to current shell session
 export http_proxy="http://127.0.0.1:3128/"
 export https_proxy="http://127.0.0.1:3128/"
 
 echo "=== 5. Hardening Firewall (Blocking direct Outgoing 80/443) ==="
+iptables-save > /etc/iptables.rules
+
 # Clear existing rules for a clean state during testing
 iptables -F OUTPUT
 

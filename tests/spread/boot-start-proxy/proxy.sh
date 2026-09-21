@@ -2,7 +2,7 @@
 
 set -e
 
-apt-get update && apt-get install -y squid-openssl openssl iptables ca-certificates-java
+apt-get update && apt-get install -y squid-openssl openssl iptables ca-certificates
 
 echo "=== 2. Generating SSL Certificate for HTTPS Interception ==="
 
